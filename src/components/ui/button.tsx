@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-full font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary:
@@ -41,6 +41,13 @@ type ButtonAsLink = ButtonOwnProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
+const shimmer = (
+  <span
+    aria-hidden="true"
+    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+  />
+);
+
 export function Button(props: ButtonProps) {
   const { variant = "primary", size = "md", className, children, href, ...domProps } = props;
   const classes = cn(base, variants[variant], sizes[size], className);
@@ -48,14 +55,16 @@ export function Button(props: ButtonProps) {
   if (href) {
     return (
       <Link href={href} className={classes} {...(domProps as Omit<ButtonAsLink, keyof ButtonOwnProps | "href">)}>
-        {children}
+        {variant === "primary" && shimmer}
+        <span className="relative inline-flex items-center gap-2">{children}</span>
       </Link>
     );
   }
 
   return (
     <button className={classes} {...(domProps as Omit<ButtonAsButton, keyof ButtonOwnProps | "href">)}>
-      {children}
+      {variant === "primary" && shimmer}
+      <span className="relative inline-flex items-center gap-2">{children}</span>
     </button>
   );
 }

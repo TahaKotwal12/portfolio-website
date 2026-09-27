@@ -71,22 +71,30 @@ export function Services() {
         </div>
 
         <RevealGroup className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <RevealItem key={service.title}>
-              <div className="group relative h-full bg-background p-8 transition-colors hover:bg-surface">
-                <service.icon
-                  className="size-6 text-accent-2 dark:text-accent"
-                  strokeWidth={1.5}
-                />
-                <h3 className="mt-6 font-display text-lg font-medium tracking-tight">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  {service.description}
-                </p>
-              </div>
-            </RevealItem>
-          ))}
+          {services.map((service, i) => {
+            const glow = ["var(--accent-2)", "var(--aurora-blue)", "var(--aurora-rose)"][i % 3];
+            return (
+              <RevealItem key={service.title}>
+                <div className="group relative h-full overflow-hidden bg-background p-8 transition-colors hover:bg-surface">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -left-10 -top-10 size-32 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-25"
+                    style={{ background: glow }}
+                  />
+                  <service.icon
+                    className="relative size-6 text-accent-2 transition-transform duration-500 ease-out group-hover:-translate-y-0.5 group-hover:scale-110 dark:text-accent"
+                    strokeWidth={1.5}
+                  />
+                  <h3 className="relative mt-6 font-display text-lg font-medium tracking-tight">
+                    {service.title}
+                  </h3>
+                  <p className="relative mt-3 text-sm leading-relaxed text-muted">
+                    {service.description}
+                  </p>
+                </div>
+              </RevealItem>
+            );
+          })}
         </RevealGroup>
       </Container>
     </section>

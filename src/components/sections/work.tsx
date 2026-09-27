@@ -82,7 +82,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.4, delay: index < 2 ? index * 0.06 : 0, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface",
+        "group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-shadow duration-500 hover:border-accent-2/40 hover:shadow-[0_0_0_1px_var(--accent-2),0_20px_60px_-20px_var(--accent-2)] dark:hover:border-accent/30 dark:hover:shadow-[0_0_0_1px_var(--accent),0_20px_60px_-20px_var(--accent)]",
         project.featured && "md:col-span-2"
       )}
     >

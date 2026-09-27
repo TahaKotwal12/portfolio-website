@@ -16,7 +16,12 @@ export function GridBackground({ x, y, hover }: GridBackgroundProps) {
 
   return (
     <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {/* Base grid, always faintly visible */}
+      {/* Slow-drifting, softly colored blobs — the "aurora" layer */}
+      <div className="aurora-blob aurora-blob-a left-[10%] top-[-20%] size-[34rem] bg-[var(--accent-2)]/20" />
+      <div className="aurora-blob aurora-blob-b right-[5%] top-[-10%] size-[30rem] bg-[var(--aurora-blue)]/14" />
+      <div className="aurora-blob aurora-blob-c left-[35%] top-[20%] size-[28rem] bg-[var(--aurora-rose)]/10" />
+
+      {/* Grid lines sit above the aurora so they read as a fine overlay */}
       <div className="grid-backdrop absolute inset-0" />
 
       {/* Brighter grid lines, revealed in a torch-like circle that follows the cursor */}
@@ -27,9 +32,6 @@ export function GridBackground({ x, y, hover }: GridBackgroundProps) {
 
       {/* Soft color glow that trails the cursor */}
       <motion.div className="absolute inset-0" style={{ background: glowBackground, opacity: hover }} />
-
-      <div className="absolute left-1/2 top-[-10%] size-[60rem] -translate-x-1/2 rounded-full bg-accent-2/10 blur-[140px] dark:bg-accent-2/15" />
-      <div className="absolute right-[-10%] top-[30%] size-[40rem] rounded-full bg-accent/10 blur-[140px]" />
     </div>
   );
 }
