@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import * as React from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -16,9 +17,33 @@ const stats = [
 ];
 
 export function Hero() {
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const hover = useMotionValue(0);
+
+  const springConfig = { damping: 30, stiffness: 250, mass: 0.6 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
+  const hoverSpring = useSpring(hover, { damping: 24, stiffness: 200 });
+
+  function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+    if (event.pointerType !== "mouse") return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(event.clientX - rect.left);
+    mouseY.set(event.clientY - rect.top);
+  }
+
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 lg:pt-44 lg:pb-28">
-      <GridBackground />
+    <section
+      ref={sectionRef}
+      onPointerMove={handlePointerMove}
+      onPointerEnter={() => hover.set(1)}
+      onPointerLeave={() => hover.set(0)}
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-44 lg:pb-28"
+    >
+      <GridBackground x={x} y={y} hover={hoverSpring} />
       <Container>
         <div className="flex flex-col items-center text-center">
           <motion.div
